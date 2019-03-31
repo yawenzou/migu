@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>AR闯关赢好礼</title>
+		<link rel="stylesheet" href="./css/reset.css" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+
+		<script src="js/three.js"></script>
+
+		<script src="js/inflate.min.js"></script>
+		<script src="js/FBXLoader.js"></script>
+
+		<script src="js/OrbitControls.js"></script>
+
+		<script src="js/WebGL.js"></script>
+		<script src="js/stats.min.js"></script>
+	</head>
+	<body>
+		<canvas id="qrCanvas" class="qr-canvas"></canvas>
+
+		<div id = "sao" class="sao">
+			<div class="sao-img">
+				<img src="./img/sao_k.png" class="kuang" />
+				<img src="./img/line.png" class="line" id = "scanningLine"/>
+			</div>
+			<div class="sao-btn">
+				<img id="saoBtn" src="./img/sao_btn.png" alt="扫一扫">
+			</div>
+		</div>
+
+		<div id="model3d" class="model-3d"></div>
+		
+		<div id="cardBag" class="card-bag">
+			<div class="left-img"><img src="./img/bag_close.png" alt=""></div>
+			<div class="right-card">
+				<!-- <img src="./img/card1.png" alt="精灵卡片" class="card-img">
+				<img src="./img/card2.png" alt="精灵卡片" class="card-img">
+				<img src="./img/card3.png" alt="精灵卡片" class="card-img">
+				<img src="./img/card4.png" alt="精灵卡片" class="card-img">
+				<img src="./img/card5.png" alt="精灵卡片" class="card-img"> -->
+			</div>
+		</div>
+
+		<!-- <img src="./img/card1.png" class="move-card"  /> -->
+
+		<div class="way" id="way">
+			<img class="way-img" src = "./img/way1.png"/>
+			<img id = "wayClose" class="way-close" src = "./img/close.png"/>
+		</div>
+		<div id="openBtn" class="open-btn">查看路线</div>
+
+		<script type="text/javascript" src="js/index.js" ></script>
+		<script type="text/javascript" src="js/cramer.js" ></script>
+		<script type="text/javascript" src="js/cardAnimate.js" ></script>
+		<script type="text/javascript" src="js/draw-3d.js" ></script>
+	</body>
+</html>

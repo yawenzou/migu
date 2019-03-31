@@ -1,0 +1,171 @@
+* { touch-action: pan-y; } 
+body {
+	background-color: #f4f4f4;
+}
+.qr-canvas {
+	position: relative;
+	width: 100%;
+}
+.model-3d {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 300px;
+	text-align: center;
+	color: red;
+	z-index: 100;
+}
+
+/*卡包*/
+	.card-bag {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 300px;
+		overflow: hidden;
+		background-color: #fff;
+		border-top: 1px solid #999;
+	}
+	.left-img {
+		position: relative;
+		float: left;
+		width: 16%;
+		height: 100%;
+		text-align: center;
+	}
+	.left-img img {
+		width: 94%;
+		vertical-align: middle;
+		margin-top: 48px;
+	}
+	.right-card {
+		position: relative;
+		margin-left: 16%;
+		height: 100%;
+	}
+	.right-card img{
+		width: 18%;
+		vertical-align: middle;
+		margin-top: 2%;
+	}
+	.show-card {
+		animation: showCard 1s;
+	}
+
+/*扫一扫*/
+ .sao {
+ 	position: absolute;
+ 	top: 0;
+ 	left: 0;
+ 	width: 100%;
+ 	min-height: 300px;
+ 	text-align: center;
+ 	z-index: 10; 
+ }
+ .sao-img {
+ 	position: relative;
+ 	margin-top: 30%;
+ 	margin-bottom: 12%;
+ }
+ .sao-img img {
+ 	text-align: center;
+ 	width: 50%;
+ }
+ .sao-img .line {
+ 	position: absolute;
+    left: 50%;
+    margin-left: -25%;
+    top: 4px;
+ }
+ .sao-btn {
+ 	text-align: center;
+ }
+ .sao-btn img {
+ 	width: 40%;
+ }
+
+
+/*卡片*/
+.move-card {
+	position: absolute;
+	top: 100%;
+	z-index: 200;
+	animation: cardMove 5s;
+}
+
+.way {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 300;
+
+}
+.way-img {
+	width: 90%;
+	margin: 10% auto 0 auto;
+	display: block;
+}
+.way-close {
+	position: absolute;
+	top: 8%;
+	right: 3%;
+	width: 80px;
+}
+.open-btn {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 160px;
+	height: 60px;
+	border: 2px solid #ffc41d;
+	line-height: 60px;
+	text-align: center;
+	z-index: 300;
+	font-size: 28px;
+	color: #ffc41d;
+}
+
+
+/**动画**/
+@keyframes cardMove {
+	0% {
+		width: 0;
+		height: 0;
+		top: 30%;
+		left: 50%;
+	}
+	50% {
+		width: 30%;
+		height: auto;
+		top: 20%;
+		left: 35%;
+	}
+	60% {
+		width: 30%;
+		height: auto;
+		top: 20%;
+		left: 35%;
+	}
+	85% {
+		width: 20%;
+		height: 20%;
+		top: 70%;
+		left: 10%;
+	}
+	100% {
+		width: 0;
+		height: 0;
+		top: 90%;
+		left: 7%;
+	}
+}
+
+@keyframes showCard {
+	from {opacity: 0;}
+	to {
+		opacity: 1;
+	}
+}
