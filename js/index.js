@@ -1,10 +1,10 @@
 $(function() {
-    //startDraw3d();
+    startDraw3d();
     setDOmSize();
     showCard();
 
-    $("#qrCanvas").hide();
-    $("#model3d").hide();
+    $("#qrVideo").hide();
+    //$("#model3d").hide();
     $("#way").hide();
     $("#openBtn").hide();
 
@@ -24,6 +24,7 @@ $(function() {
 
 function setDOmSize() {
     $("#qrCanvas").height(window.innerHeight-300);
+    $("#qrVideo").height(window.innerHeight-300);
 }
 
 function startScanning() {
@@ -32,13 +33,13 @@ function startScanning() {
         openMedia();
     }
     else {
-        alert("您的卡片集奇拉")
+        window.location.href = "success.html";
     }
 }
 
 function successStartScanning() {
     $("#saoBtn").hide();
-    $("#qrCanvas").show();
+    $("#qrVideo").show();
     $("#scanningLine").css({opacity:1});
     animateScanning();
 }
@@ -57,7 +58,7 @@ function distinguishImg(imgData) {
     var formData = new FormData();
     formData.append("file", imgData);
     $.ajax({
-        url: '/api/recognition',
+        url: 'http://47.110.64.77/api/recognition',
         type: 'POST',
         data: formData,
         dataType:"text",  
@@ -67,9 +68,9 @@ function distinguishImg(imgData) {
             var rs = JSON.parse(data);
             //if(rs.code === 200) {
                 $("#sao").hide();
+                clearInterval(timer1);
                 startDraw3d();
                 $("#model3d").show();
-                clearInterval(timer1);
             //}
             //else {
             //    curNum = 0;
@@ -92,6 +93,6 @@ function showCard() {
     }
     $(".right-card").html(listText);
     if(cardNum === 5) {
-        alert('您的卡片收集齐拉！，去领奖吧');
+        window.location.href = "success.html";
     }
 }

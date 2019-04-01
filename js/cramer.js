@@ -22,7 +22,7 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
 // 回调
 function successFunc(stream) {
     mediaStreamTrack = stream;
-    video = document.createElement('video');
+    video = document.getElementById('qrVideo');
     if ("srcObject" in video) {
         video.srcObject = stream
     } else {
@@ -62,7 +62,7 @@ function closeMedia(){
 }
 
 //截取视频
-var upNum = 50;
+var upNum = 1;
 var curNum = 0;
 var timer3;
 function drawMedia(){
@@ -73,11 +73,12 @@ function drawMedia(){
         context1.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
         curNum++;
         if(curNum === upNum) {
+            //alert(curNum)
             let imgData = canvas1.toDataURL('image/png');
             let file = dataURItoBlob(imgData);
             distinguishImg(file)
         }
-    }, 20);
+    }, 500);
 }
 
 function dataURItoBlob(base64Data) {

@@ -19,7 +19,7 @@ function addCard() {
 		$(".right-card").append(listText);
 
 		closeMedia();
-		$("#qrCanvas").hide();
+		$("#qrVideo").hide();
 		$("#sao").show();
 		$("#saoBtn").show();
 		$("#scanningLine").css({opacity:0});
@@ -28,10 +28,10 @@ function addCard() {
 		clearInterval(timer3);
 
 		if(cardNum === 5) {
-			alert("您的卡片收集齐拉！, 去领奖吧")
+			window.location.href = "success.html";
 		}
 	}
 	else {
-		alert('您的卡片收集齐拉！');
+		window.location.href = "success.html";
 	}
 }

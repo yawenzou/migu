@@ -22,7 +22,7 @@ function startDraw3d() {
 
 
 function init() {
-
+//alert("开始画3d");
 	container = document.createElement( 'div' );
 
 	canvasContainer.appendChild( container );
@@ -38,12 +38,13 @@ function init() {
 	scene = new THREE.Scene();
 
 	light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-	light.position.set( 0, 200, 0 );
+	light.position.set( 0, 0, 200 );
 	scene.add( light );
 
 	// model
 	var loader = new THREE.FBXLoader();
-	loader.load( 'model/MIGUDon.fbx', function ( object ) {
+	
+	loader.load( 'model/migu2.fbx', function ( object ) {
 
 		mixer = new THREE.AnimationMixer( object );
 
@@ -51,13 +52,6 @@ function init() {
 		action.play();
 
 		object.traverse( function ( child ) {
-
-			texturePlante = THREE.ImageUtils.loadTexture("model/bb.png",null,function(t){});//模型贴图
-
-			var material = new THREE.MeshPhongMaterial({
-	            map:texturePlante
-	        });
-	        child.material=material;
 
 			if ( child.isMesh ) {
 
@@ -102,9 +96,9 @@ function animate() {
 
 	requestAnimationFrame( animate );
 
-	//var delta = clock.getDelta();
+	var delta = clock.getDelta();
 
-	//if ( mixer ) mixer.update( delta );
+	if ( mixer ) mixer.update( delta );
 
 	renderer.render( scene, camera );
 
