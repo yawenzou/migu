@@ -1,10 +1,10 @@
 $(function() {
-    startDraw3d();
+    //startDraw3d();
     setDOmSize();
     showCard();
 
     $("#qrVideo").hide();
-    //$("#model3d").hide();
+    $("#model3d").hide();
     $("#way").hide();
     $("#openBtn").hide();
 
@@ -58,7 +58,7 @@ function distinguishImg(imgData) {
     var formData = new FormData();
     formData.append("file", imgData);
     $.ajax({
-        url: 'http://47.110.64.77/api/recognition',
+        url: 'http://47.98.157.16/api/recognition',
         type: 'POST',
         data: formData,
         dataType:"text",  
