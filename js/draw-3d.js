@@ -44,7 +44,7 @@ function init() {
 	// model
 	var loader = new THREE.FBXLoader();
 	
-	loader.load( 'model/migu2.fbx', function ( object ) {
+	loader.load( 'model/model1.fbx', function ( object ) {
 
 		mixer = new THREE.AnimationMixer( object );
 

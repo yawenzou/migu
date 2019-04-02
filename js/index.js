@@ -1,10 +1,10 @@
 $(function() {
-    //startDraw3d();
+    startDraw3d();
     setDOmSize();
     showCard();
 
     $("#qrVideo").hide();
-    $("#model3d").hide();
+    //$("#model3d").hide();
     $("#way").hide();
     $("#openBtn").hide();
 
