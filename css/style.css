@@ -150,6 +150,15 @@ body {
 }
 
 
+#label {
+	position: absolute;
+	z-index: 400;
+	width: 200px;
+	height: 200px;
+	background-color: red;
+}
+
+
 /**动画**/
 @keyframes cardMove {
 	0% {

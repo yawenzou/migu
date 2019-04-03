@@ -1,12 +1,12 @@
 $(function() {
-    startDraw3d();
+    //startDraw3d();
     setDOmSize();
     showCard();
+    setWay();
 
     $("#qrVideo").hide();
-    //$("#model3d").hide();
+    $("#model3d").hide();
     $("#way").hide();
-    $("#openBtn").hide();
 
     $("#scanningLine").css({opacity:0});
     $("#saoBtn").click(function() {
@@ -21,6 +21,11 @@ $(function() {
     })
     	
 });
+
+function setWay() {
+    var index = parseInt(Math.random()*4+1, 10);
+    $("#wayImg").attr("src", "./img/way"+index + ".png");
+}
 
 function setDOmSize() {
     $("#qrCanvas").height(window.innerHeight-300);
@@ -67,10 +72,12 @@ function distinguishImg(imgData) {
         success:function(data) {
             var rs = JSON.parse(data);
             //if(rs.code === 200) {
+                //let index = parseInt(data.content.split("pic")[1],10);
                 $("#sao").hide();
                 clearInterval(timer1);
-                startDraw3d();
                 $("#model3d").show();
+
+                startDraw3d(1);
             //}
             //else {
             //    curNum = 0;

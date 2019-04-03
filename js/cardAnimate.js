@@ -24,7 +24,6 @@ function addCard() {
 		$("#saoBtn").show();
 		$("#scanningLine").css({opacity:0});
 		$("#way").show();
-    	$("#openBtn").show();
 		clearInterval(timer3);
 
 		if(cardNum === 5) {
