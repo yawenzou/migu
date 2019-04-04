@@ -115,11 +115,24 @@ body {
 	}
 	.way-close {
 		position: absolute;
-		top: 8%;
+		top: 4%;
 		right: 3%;
 		width: 80px;
 	}
 	.open-btn {
+		position: absolute;
+		top: 5px;
+		left: 200px;
+		width: 160px;
+		height: 60px;
+		border: 2px solid #ffc41d;
+		line-height: 60px;
+		text-align: center;
+		z-index: 300;
+		font-size: 28px;
+		color: #ffc41d;
+	}
+	.open-rule-btn {
 		position: absolute;
 		top: 5px;
 		left: 5px;

@@ -27,17 +27,19 @@ function init(index) {
 //alert("开始画3d");
 	container = document.createElement( 'div' );
 
+	scene = new THREE.Scene();
 	canvasContainer.appendChild( container );
 
 	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / height1, 0.1, 1000 );
-	camera.position.set( 0, 0, 300 );
+	camera.position.set( 0, -10, 100 );
+	camera.lookAt( scene.position );
+
 
 	controls = new THREE.OrbitControls( camera );
-	//controls.enabled = false;
+	controls.enabled = false;
 	//controls.target.set( 0, 100, 0 );
 	//controls.update();
 
-	scene = new THREE.Scene();
 
 	light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
 	light.position.set( 600, 600, 600 );
@@ -87,6 +89,8 @@ function init(index) {
 		action.play();
 		object1 = object;
 		//getScreenPosition(object);
+
+		//object.rotation.x = 10;
 		object.traverse( function ( child ) {
 
 			if ( child.isMesh ) {
@@ -94,14 +98,14 @@ function init(index) {
 				child.castShadow = true;
 				child.receiveShadow = true;
 
+				setTimeout(function() {
+					isAnimate = true;
+					scene.add( object );
+				}, 4000)
 			}
 
 		} );
 
-		setTimeout(function() {
-			isAnimate = true;
-			scene.add( object );
-		}, 4000)
 
 	} );
 
@@ -112,7 +116,7 @@ function init(index) {
 	container.appendChild( renderer.domElement );
 
 	window.addEventListener( 'resize', onWindowResize, false );
-	document.addEventListener("click", onDocumenClick, false);
+	window.addEventListener("click", onDocumenClick, false);
 
 	// stats
 	//stats = new Stats();
@@ -172,4 +176,20 @@ function onDocumenClick(e) {
     }
 
 
+}
+
+function getScreenPosition(object) {
+	var label = document.getElementById("label");
+	let halfWidth = window.innerWidth / 2;
+    let halfHeight = height1 / 2;
+
+    var vector = new THREE.Vector3();
+
+    object1.position.clone().project(camera);
+
+    vector.x = vector.x * halfWidth + halfWidth;
+    vector.y = -vector.y * halfHeight + halfHeight;
+
+    label.style.left = vector.x + "px";
+    label.style.top = vector.y+ "px";
 }

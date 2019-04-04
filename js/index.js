@@ -1,4 +1,6 @@
 $(function() {
+    let flag = true;
+
     startDraw3d();
     setDOmSize();
     showCard();
@@ -16,15 +18,25 @@ $(function() {
     $("#wayClose").click(function() {
         $("#way").hide();
     })
+    $("#ruleClose").click(function() {
+        $("#rule").hide();
+        if(flag) {
+            $("#way").show();
+            flag = false;
+        }
+    })
     $("#openBtn").click(function() {
         $("#way").show();
+    })
+    $("#openRuleBtn").click(function() {
+        $("#rule").show();
     })
     	
 });
 
 function setWay() {
     var index = parseInt(Math.random()*4+1, 10);
-    $("#wayImg").attr("src", "./img/way"+index + ".png");
+    $("#wayImg").attr("src", "./img/way"+index + ".jpg");
 }
 
 function setDOmSize() {
