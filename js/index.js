@@ -1,16 +1,19 @@
 $(function() {
-    let flag = true;
 
-    startDraw3d();
+    $("#model3d").hide();
+
+    event();
+    //startDraw3d();
     setDOmSize();
     showCard();
     setWay();
 
-    $("#qrVideo").hide();
-    //$("#model3d").hide();
-    $("#way").hide();
+    
+    	
+});
 
-    $("#scanningLine").css({opacity:0});
+function event() {
+    let flag = true;
     $("#saoBtn").click(function() {
         startScanning();
     });
@@ -18,6 +21,7 @@ $(function() {
     $("#wayClose").click(function() {
         $("#way").hide();
     })
+
     $("#ruleClose").click(function() {
         $("#rule").hide();
         if(flag) {
@@ -25,14 +29,19 @@ $(function() {
             flag = false;
         }
     })
+
     $("#openBtn").click(function() {
         $("#way").show();
     })
+
     $("#openRuleBtn").click(function() {
         $("#rule").show();
     })
-    	
-});
+
+    $("#successPop").click(function() {
+        window.location.href = "success.html";
+    })
+}
 
 function setWay() {
     var index = parseInt(Math.random()*4+1, 10);
@@ -45,12 +54,12 @@ function setDOmSize() {
 }
 
 function startScanning() {
-    var cardNum = window.localStorage.getItem("cardNum") ? window.localStorage.getItem("cardNum") : 0;
-    if(cardNum < 5) {
+    var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
+    if(cardStr.split(",").length < 5) {
         openMedia();
     }
     else {
-        window.location.href = "success.html";
+        $("#successPop").show();
     }
 }
 
@@ -84,12 +93,27 @@ function distinguishImg(imgData) {
         success:function(data) {
             var rs = JSON.parse(data);
             //if(rs.code === 200) {
+                var cardStr = window.localStorage.getItem("cardStr") ? parseInt(window.localStorage.getItem("cardStr")) : '';
                 //let index = parseInt(data.content.split("pic")[1],10);
-                $("#sao").hide();
-                clearInterval(timer1);
-                $("#model3d").show();
+                let index = 1;
+                //if(!cardStr || String(cardStr).indexOf(index) <0) {
+                    $("#sao").hide();
+                    clearInterval(timer1);
+                    $("#model3d").show();
+                    window.localStorage.setItem("cardNum", index);
+                    startDraw3d(index);
 
-                startDraw3d(1);
+               // }
+               // else {
+                    /*alert("该类型精灵已经收集过哦，您可以去其他展位手机精灵");
+                    closeMedia();
+                    clearInterval(timer1);
+                    clearInterval(timer3);
+                    $("#qrVideo").hide();
+                    $("#sao").show();
+                    $("#saoBtn").show();
+                    $("#scanningLine").css({opacity:0});*/
+               // }
             //}
             //else {
             //    curNum = 0;
@@ -103,15 +127,30 @@ function distinguishImg(imgData) {
 }
 
 function showCard() {
-    var cardNum = window.localStorage.getItem("cardNum") ? window.localStorage.getItem("cardNum") : 0;
+    var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
 
-    var listText = '';
-    for (var i = 0; i < cardNum; i++) {
-        j = i+1;
-        listText += '<img src="./img/card'+j+'.png" alt="精灵卡片" class="card-img show-card" />';
+    if(cardStr) {
+        var listText = '';
+        var cardArr = cardStr.split(',');
+        for (var i = 0; i < cardArr.length; i++) {
+            listText += '<img src="./img/card'+cardArr[i]+'.png" alt="精灵卡片" class="card-img show-card" />';
+        }
+        $(".right-card").html(listText);
+        if(cardArr.length === 5) {
+            $("#susccessPop").show();
+        }
     }
-    $(".right-card").html(listText);
-    if(cardNum === 5) {
-        window.location.href = "success.html";
-    }
+}
+
+function showTime() {
+    $("#timer").show()
+    setTimeout(function() {
+        $("#timer").attr("src", "./img/2.png");
+    }, 1000)
+    setTimeout(function() {
+        $("#timer").attr("src", "./img/1.png");
+    }, 2000)
+    setTimeout(function() {
+        $("#timer").hide();
+    }, 3000)
 }

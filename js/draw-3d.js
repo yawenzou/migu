@@ -7,6 +7,7 @@ if ( WEBGL.isWebGLAvailable() === false ) {
 var container, stats, controls;
 var camera, scene, renderer, light;
 var object1, object2;
+var meshHelper,cube;
 var mouse = new THREE.Vector2();
 
 var clock = new THREE.Clock();
@@ -18,13 +19,13 @@ var canvasContainer = document.getElementById("model3d");
 var height1 = window.innerHeight-300;
 
 function startDraw3d(index) {
-	init(1);
+	init(index);
 	animate();
 }
 
 
 function init(index) {
-//alert("开始画3d");
+
 	container = document.createElement( 'div' );
 
 	scene = new THREE.Scene();
@@ -37,8 +38,6 @@ function init(index) {
 
 	controls = new THREE.OrbitControls( camera );
 	controls.enabled = false;
-	//controls.target.set( 0, 100, 0 );
-	//controls.update();
 
 
 	light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
@@ -48,14 +47,15 @@ function init(index) {
 	// model
 	var loader = new THREE.FBXLoader();
 	
-	loader.load( 'model/model'+index+'.fbx', function ( object ) {
+	loader.load( 'model/model4.fbx', function ( object ) {
 
 		mixer = new THREE.AnimationMixer( object );
 
 		var action = mixer.clipAction( object.animations[ 0 ] );
-		action.setDuration(8);
+		action.setDuration(5);
 		action.play();
-
+		
+console.log(object);
 		object.traverse( function ( child ) {
 
 			if ( child.isMesh ) {
@@ -74,13 +74,14 @@ function init(index) {
 			action.stop();
 			isAnimate = false;
 			scene.remove(object);
+			showTime();
 		}, 4000)
 
 	} );
 
 	// model
 	var loader2 = new THREE.FBXLoader();
-	loader2.load( 'model/play-model'+index+'.fbx', function ( object ) {
+	loader2.load( 'model/qiu4.fbx', function ( object ) {
 
 		mixer2 = new THREE.AnimationMixer( object );
 
@@ -88,7 +89,10 @@ function init(index) {
 		action.startAt(4)
 		action.play();
 		object1 = object;
-		//getScreenPosition(object);
+console.log(object);		
+		 //添加骨骼辅助
+        meshHelper = new THREE.SkeletonHelper(object);
+        scene.add(object, meshHelper);
 
 		//object.rotation.x = 10;
 		object.traverse( function ( child ) {
@@ -98,11 +102,11 @@ function init(index) {
 				child.castShadow = true;
 				child.receiveShadow = true;
 
-				setTimeout(function() {
-					isAnimate = true;
-					scene.add( object );
-				}, 4000)
 			}
+			setTimeout(function() {
+				isAnimate = true;
+				scene.add( object );
+			}, 8000)
 
 		} );
 
@@ -112,7 +116,7 @@ function init(index) {
 	renderer = new THREE.WebGLRenderer( { antialias: true , alpha: true} );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, height1 );
-	renderer.shadowMap.enabled = false;
+	renderer.shadowMap.enabled = true;
 	container.appendChild( renderer.domElement );
 
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -142,6 +146,9 @@ function animate() {
 
 	if ( mixer ) mixer.update( delta );
 	if ( mixer2 ) mixer2.update( delta );
+	if(isAnimate) {
+		//updateLabel();
+	}
 
 	renderer.render( scene, camera );
 
@@ -172,24 +179,40 @@ function onDocumenClick(e) {
         SELECTED = intersects[0].object;
         var intersected = intersects[0].object;
         console.log(intersects[0].object.ID);
-       // cardAnimate();
+       cardAnimate();
     }
 
 
 }
 
-function getScreenPosition(object) {
+
+function updateLabel() {
 	var label = document.getElementById("label");
-	let halfWidth = window.innerWidth / 2;
-    let halfHeight = height1 / 2;
 
-    var vector = new THREE.Vector3();
+    var minY = null, x = null,
+    	verts = cube.geometry.vertices;
+    for (var i = 0, iLen = verts.length; i < iLen; i++) {
+        var pos = getScreenPosition(verts[i]);
+        if (minY === null || pos.y < minY) {
+        	minY = pos.y;
+            x = pos.x;
+        }
+    }
+    label.style.left = (x - 3) + "px";
+    label.style.top = (minY - 28) + "px";
+}
 
-    object1.position.clone().project(camera);
+function getScreenPosition(position) {
+	var vector = new THREE.Vector3( position.x, position.y, position.z );
 
-    vector.x = vector.x * halfWidth + halfWidth;
-    vector.y = -vector.y * halfHeight + halfHeight;
+    // model to world
+    var modelMat = cube.matrixWorld;
+    vector.applyMatrix4(modelMat);
 
-    label.style.left = vector.x + "px";
-    label.style.top = vector.y+ "px";
+    vector.project(camera);
+
+    vector.x = Math.round( (   vector.x + 1 ) * window.innerWidth / 2 );
+    vector.y = Math.round( ( - vector.y + 1 ) * height1 / 2 );
+
+    return vector;
 }

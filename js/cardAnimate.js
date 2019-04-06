@@ -11,9 +11,19 @@ function cardAnimate() {
 
 function addCard() {
 	var cardNum = window.localStorage.getItem("cardNum") ? parseInt(window.localStorage.getItem("cardNum")) : 0;
-	if(cardNum < 5) {
-		cardNum++;
-		window.localStorage.setItem("cardNum", cardNum);
+	var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
+	let cardArr;
+	if(cardStr) {
+		cardArr = String(cardStr).split(",");
+	}
+	else {
+		cardArr = [];
+	}
+	if(cardArr.length < 5) {
+		cardArr.push(cardNum);
+		cardStr = cardArr.join(",");
+		window.localStorage.setItem("cardNum", 0);
+		window.localStorage.setItem("cardStr", cardStr);
 
 		var listText = '<img src="./img/card'+cardNum+'.png" alt="精灵卡片" class="card-img show-card" />';
 		$(".right-card").append(listText);
@@ -23,14 +33,16 @@ function addCard() {
 		$("#sao").show();
 		$("#saoBtn").show();
 		$("#scanningLine").css({opacity:0});
-		$("#way").show();
 		clearInterval(timer3);
 
-		if(cardNum === 5) {
-			window.location.href = "success.html";
+		if(cardArr.length === 5) {
+			 $("#successPop").show();
+		}
+		else {
+			$("#way").show();
 		}
 	}
 	else {
-		window.location.href = "success.html";
+		 $("#successPop").show();
 	}
 }

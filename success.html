@@ -4,10 +4,43 @@
 		<title>AR闯关赢好礼</title>
 		<link rel="stylesheet" href="./css/reset.css" />
 		<link rel="stylesheet" href="./css/style.css" />
+
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+
+		<<style type="text/css" media="screen">
+			.share-img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 100;
+				display: none;
+			}
+		</style>
 	</head>
 	<body style="background-color: #fff">
 		<img src="./img/success.png" alt="你成功啦" class="sueecss-img" />
-		<img src="./img/share_btn.png" alt="分享" class="share-btn" />
-		<img src="./img/download_btn.png" alt="下载" class="download_btn" />
+		<img src="./img/share_btn.png" alt="分享" id="shareBtn" class="share-btn" />
+		<img src="./img/success_btn.jpg" alt="完成" id="finished" class="download_btn" />
+
+		<img src="./img/share_bg.png" alt="分享" class="share-img"  id = "shareImg"/>
+			
+		</div>>
+
+		<script>
+			$(function() {
+				$("#finished").click(function() {
+					window.localStorage.removeItem("cardNum");
+					window.localStorage.removeItem("cardStr");
+				})
+				$("#shareBtn").click(function() {
+					$("#shareImg").show()
+				})
+				$("#shareImg").click(function() {
+					$("#shareImg").hide()
+				})
+			})
+		</script>
 	</body>
 </html>

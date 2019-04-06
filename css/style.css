@@ -10,6 +10,7 @@ body {
 .qr-video {
 	position: relative;
 	width: 100%;
+	display: none;
 }
 .model-3d {
 	position: absolute;
@@ -83,6 +84,7 @@ body {
 	    left: 50%;
 	    margin-left: -25%;
 	    top: 4px;
+	    opacity: 0;
 	 }
 	 .sao-btn {
 	 	text-align: center;
@@ -147,6 +149,14 @@ body {
 	}
 
 
+.success-pop {
+	position: absolute;
+	top: 30%;
+	width: 80%;
+	left: 10%;
+	z-index: 400;
+	display: none;
+}
 /*成功页面*/
 .sueecss-img {
 	position: relative;
@@ -169,6 +179,15 @@ body {
 	width: 200px;
 	height: 200px;
 	background-color: red;
+}
+
+.timer {
+	position: absolute;
+	top: 35%;
+	left: 40%;
+	width: 20%;
+	z-index: 500;
+	display: none;
 }
 
 
