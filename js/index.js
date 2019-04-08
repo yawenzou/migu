@@ -1,9 +1,10 @@
 $(function() {
 
+    //$(".way").hide();
+    //startDraw3d();
     $("#model3d").hide();
 
     event();
-    //startDraw3d();
     setDOmSize();
     showCard();
     setWay();

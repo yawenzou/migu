@@ -6,7 +6,6 @@ if ( WEBGL.isWebGLAvailable() === false ) {
 
 var container, stats, controls;
 var camera, scene, renderer, light;
-var object1, object2;
 var meshHelper,cube;
 var mouse = new THREE.Vector2();
 
@@ -55,7 +54,6 @@ function init(index) {
 		action.setDuration(5);
 		action.play();
 		
-console.log(object);
 		object.traverse( function ( child ) {
 
 			if ( child.isMesh ) {
@@ -81,31 +79,30 @@ console.log(object);
 
 	// model
 	var loader2 = new THREE.FBXLoader();
-	loader2.load( 'model/qiu4.fbx', function ( object ) {
+	loader2.load( 'model/ceshi2.fbx', function ( object ) {
 
 		mixer2 = new THREE.AnimationMixer( object );
 
 		var action = mixer2.clipAction( object.animations[ 0 ] );
 		action.startAt(4)
 		action.play();
-		object1 = object;
-console.log(object);		
-		 //添加骨骼辅助
-        meshHelper = new THREE.SkeletonHelper(object);
-        scene.add(object, meshHelper);
 
-		//object.rotation.x = 10;
 		object.traverse( function ( child ) {
 
-			if ( child.isMesh ) {
+			if ( child instanceof THREE.Mesh) {
 
 				child.castShadow = true;
 				child.receiveShadow = true;
+				if(child.name == 'pSphere1') {
+					child.material.transparent=true;
+					child.material.opacity = 0;
+				}
 
 			}
 			setTimeout(function() {
 				isAnimate = true;
 				scene.add( object );
+				bindClick();
 			}, 8000)
 
 		} );
@@ -120,11 +117,6 @@ console.log(object);
 	container.appendChild( renderer.domElement );
 
 	window.addEventListener( 'resize', onWindowResize, false );
-	window.addEventListener("click", onDocumenClick, false);
-
-	// stats
-	//stats = new Stats();
-	//container.appendChild( stats.dom );
 
 }
 
@@ -146,9 +138,6 @@ function animate() {
 
 	if ( mixer ) mixer.update( delta );
 	if ( mixer2 ) mixer2.update( delta );
-	if(isAnimate) {
-		//updateLabel();
-	}
 
 	renderer.render( scene, camera );
 
@@ -176,43 +165,18 @@ function onDocumenClick(e) {
     console.log(intersects);
     if (intersects.length > 0) {
         //选中第一个射线相交的物体
-        SELECTED = intersects[0].object;
-        var intersected = intersects[0].object;
-        console.log(intersects[0].object.ID);
-       cardAnimate();
+        unbindClick();
+        cardAnimate();
     }
 
 
 }
 
-
-function updateLabel() {
-	var label = document.getElementById("label");
-
-    var minY = null, x = null,
-    	verts = cube.geometry.vertices;
-    for (var i = 0, iLen = verts.length; i < iLen; i++) {
-        var pos = getScreenPosition(verts[i]);
-        if (minY === null || pos.y < minY) {
-        	minY = pos.y;
-            x = pos.x;
-        }
-    }
-    label.style.left = (x - 3) + "px";
-    label.style.top = (minY - 28) + "px";
+function bindClick() {
+	window.addEventListener("click", onDocumenClick, false);
 }
 
-function getScreenPosition(position) {
-	var vector = new THREE.Vector3( position.x, position.y, position.z );
-
-    // model to world
-    var modelMat = cube.matrixWorld;
-    vector.applyMatrix4(modelMat);
-
-    vector.project(camera);
-
-    vector.x = Math.round( (   vector.x + 1 ) * window.innerWidth / 2 );
-    vector.y = Math.round( ( - vector.y + 1 ) * height1 / 2 );
-
-    return vector;
+function unbindClick() {
+	window.removeEventListener("click", onDocumenClick, false);
 }
+
