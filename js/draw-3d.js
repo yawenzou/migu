@@ -23,6 +23,7 @@ function startDraw3d(index) {
 }
 
 
+var durationTime = [6, 8, 7, 8, 8]
 function init(index) {
 
 	container = document.createElement( 'div' );
@@ -31,7 +32,7 @@ function init(index) {
 	canvasContainer.appendChild( container );
 
 	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / height1, 0.1, 1000 );
-	camera.position.set( 0, -10, 100 );
+	camera.position.set( 0, 0, 70 );
 	camera.lookAt( scene.position );
 
 
@@ -46,12 +47,14 @@ function init(index) {
 	// model
 	var loader = new THREE.FBXLoader();
 	
-	loader.load( 'model/model4.fbx', function ( object ) {
+	loader.load( 'model/model'+index+'.fbx', function ( object ) {
 
 		mixer = new THREE.AnimationMixer( object );
 
 		var action = mixer.clipAction( object.animations[ 0 ] );
-		action.setDuration(5);
+		action.setDuration(durationTime[index-1]);
+		action.clampWhenFinished = true;
+		action.setLoop(1, 1);
 		action.play();
 		
 		object.traverse( function ( child ) {
@@ -69,22 +72,25 @@ function init(index) {
 		isAnimate = true;
 
 		setTimeout(function() {
+			showTime();
+		}, durationTime[index-1]*1000)
+
+		setTimeout(function() {
 			action.stop();
 			isAnimate = false;
 			scene.remove(object);
-			showTime();
-		}, 4000)
+		}, durationTime[index-1]*1000+3000)
 
 	} );
 
 	// model
 	var loader2 = new THREE.FBXLoader();
-	loader2.load( 'model/ceshi2.fbx', function ( object ) {
+	loader2.load( 'model/animate-model'+index+'.fbx', function ( object ) {
 
 		mixer2 = new THREE.AnimationMixer( object );
 
 		var action = mixer2.clipAction( object.animations[ 0 ] );
-		action.startAt(4)
+		action.startAt(durationTime[index-1])
 		action.play();
 
 		object.traverse( function ( child ) {
@@ -101,9 +107,11 @@ function init(index) {
 			}
 			setTimeout(function() {
 				isAnimate = true;
+				camera.position.y = -40;
+				camera.lookAt( scene.position );
 				scene.add( object );
 				bindClick();
-			}, 8000)
+			}, durationTime[index-1]*1000+3000)
 
 		} );
 

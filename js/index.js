@@ -1,16 +1,20 @@
+var wayAll = {
+    1: [13, 1, 2, 3, 15],
+    2: [13, 4, 5, 6, 15],
+    3: [13, 7, 8, 9, 15],
+    4: [13, 10, 11, 12, 15]
+};
 $(function() {
 
-    //$(".way").hide();
+   // $(".way").hide();
     //startDraw3d();
     $("#model3d").hide();
 
     event();
+    setWay();
     setDOmSize();
     showCard();
-    setWay();
-
-    
-    	
+	
 });
 
 function event() {
@@ -46,7 +50,13 @@ function event() {
 
 function setWay() {
     var index = parseInt(Math.random()*4+1, 10);
-    $("#wayImg").attr("src", "./img/way"+index + ".jpg");
+    var currentWay = window.localStorage.getItem("currentWay") ? window.localStorage.getItem("currentWay") : wayAll[index].join(","); 
+    var wayIndex = window.localStorage.getItem("wayIndex") ? window.localStorage.getItem("wayIndex") : index; 
+    //alert("11111");
+    console.log("wayIndex:" +wayIndex)
+    window.localStorage.setItem("currentWay", wayAll[index].join(","));
+    window.localStorage.setItem("wayIndex", index);
+    $("#wayImg").attr("src", "./img/way"+wayIndex + ".jpg");
 }
 
 function setDOmSize() {
@@ -93,38 +103,55 @@ function distinguishImg(imgData) {
         contentType : false,  
         success:function(data) {
             var rs = JSON.parse(data);
-            //if(rs.code === 200) {
+            if(rs.code === 200) {
                 var cardStr = window.localStorage.getItem("cardStr") ? parseInt(window.localStorage.getItem("cardStr")) : '';
-                //let index = parseInt(data.content.split("pic")[1],10);
-                let index = 1;
-                //if(!cardStr || String(cardStr).indexOf(index) <0) {
-                    $("#sao").hide();
-                    clearInterval(timer1);
-                    $("#model3d").show();
-                    window.localStorage.setItem("cardNum", index);
-                    startDraw3d(index);
+                var currentWay = window.localStorage.getItem("currentWay") ? window.localStorage.getItem("currentWay") : wayAll[1].join(",");
+                var currentWayArr = currentWay.split(",");
+                var id = rs.content.split("pic")[1];
+                let index = currentWayArr.indexOf(id)+1;
+                //let index = 3;
+                console.log("id:" + id);
+                console.log("currentWay:" + currentWay);
+                console.log("index:" + index);
+                if(index >0) {
+                    if(!cardStr || String(cardStr).indexOf(index) <0) {
+                        $("#sao").hide();
+                        clearInterval(timer1);
+                        $("#model3d").show();
+                        window.localStorage.setItem("cardNum", index);
+                        startDraw3d(index);
 
-               // }
-               // else {
-                    /*alert("该类型精灵已经收集过哦，您可以去其他展位手机精灵");
-                    closeMedia();
-                    clearInterval(timer1);
-                    clearInterval(timer3);
-                    $("#qrVideo").hide();
-                    $("#sao").show();
-                    $("#saoBtn").show();
-                    $("#scanningLine").css({opacity:0});*/
-               // }
-            //}
-            //else {
-            //    curNum = 0;
-            //}
+                    }
+                    else {
+                        alert("该类型精灵已经收集过哦，您可以去其他展位手机精灵");
+                        saoReset();
+                    }
+                }
+                else {
+                    alert("这不是你的展位，你走的路线不对哦！");
+                    saoReset();
+                }
+            }
+            else {
+                curNum = 0;
+            }
         },
         error: function(err) {
             curNum = 0;
             console.log(err);
         }      
     })
+}
+
+
+function saoReset() {
+    closeMedia();
+    clearInterval(timer1);
+    clearInterval(timer3);
+    $("#qrVideo").hide();
+    $("#sao").show();
+    $("#saoBtn").show();
+    $("#scanningLine").css({opacity:0});
 }
 
 function showCard() {

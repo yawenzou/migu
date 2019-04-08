@@ -1,5 +1,6 @@
 function cardAnimate() {
-	var imgText = '<img src="./img/card1.png" class="move-card"  />';
+	var cardNum = window.localStorage.getItem("cardNum") ? parseInt(window.localStorage.getItem("cardNum")) : 0;
+	var imgText = '<img src="./img/card'+cardNum+'.png" class="move-card"  />';
 	$("body").append(imgText);
 	$("#model3d").hide();
 	$("#model3d div").remove();
