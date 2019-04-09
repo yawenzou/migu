@@ -4,12 +4,14 @@ var wayAll = {
     3: [13, 7, 8, 9, 15],
     4: [13, 10, 11, 12, 15]
 };
+var isIos = false;
 $(function() {
 
    // $(".way").hide();
     //startDraw3d();
     $("#model3d").hide();
 
+    phoneIsIos();
     event();
     setWay();
     setDOmSize();
@@ -18,6 +20,13 @@ $(function() {
     loadAnimate();
 	
 });
+
+function phoneIsIos() {
+    var u = navigator.userAgent, app = navigator.appVersion;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    isIos = isIOS;
+}
 
 function event() {
     let flag = true;
@@ -79,6 +88,9 @@ function startScanning() {
 function successStartScanning() {
     $("#saoBtn").hide();
     $("#qrVideo").show();
+    if(isIos) {
+        $("#qrCanvas").show();
+    }
     $("#scanningLine").css({opacity:1});
     animateScanning();
 }
@@ -93,11 +105,11 @@ function animateScanning() {
     }, 700)
 }
 
-function distinguishImg(event) {
-//function distinguishImg(imgData) {
-    let fileValue = event.target.files[0];
+//function distinguishImg(event) {
+function distinguishImg(imgData) {
+    //let fileValue = event.target.files[0];
     var formData = new FormData();
-    formData.append("file", fileValue);
+    formData.append("file", imgData);
     $.ajax({
         url: 'http://47.98.157.16/api/recognition',
         type: 'POST',
@@ -153,6 +165,7 @@ function saoReset() {
     clearInterval(timer1);
     clearInterval(timer3);
     $("#qrVideo").hide();
+    $("#qrCanvas").hide();
     $("#sao").show();
     $("#saoBtn").show();
     $("#scanningLine").css({opacity:0});

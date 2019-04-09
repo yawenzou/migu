@@ -6,11 +6,15 @@ body {
 	position: absolute;
 	width: 100%;
 	display: none;
+	left: 0;
+	top: 0;
 }
 .qr-video {
 	position: relative;
 	width: 100%;
 	display: none;
+	left: 0;
+	top: 0;
 }
 .model-3d {
 	position: absolute;

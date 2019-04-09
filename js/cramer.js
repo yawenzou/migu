@@ -70,17 +70,20 @@ var timer3;
 function drawMedia(){
     canvas1.setAttribute("width", video.videoWidth);
     canvas1.setAttribute("height", video.videoHeight);
-    //context1.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    
 	timer3 = setInterval(function(){
         context1.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
         curNum++;
         if(curNum === upNum) {
             //alert(curNum)
             let imgData = canvas1.toDataURL('image/png');
+            if(isIos) {
+                $("#qrCanvas").attr("src", imgData);
+            }
             let file = dataURItoBlob(imgData);
             distinguishImg(file)
         }
-    }, 500);
+    }, 40);
 }
 
 function dataURItoBlob(base64Data) {
