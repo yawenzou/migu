@@ -33,6 +33,8 @@
 				$("#finished").click(function() {
 					window.localStorage.removeItem("cardNum");
 					window.localStorage.removeItem("cardStr");
+					window.localStorage.removeItem("currentWay");
+					window.localStorage.removeItem("wayIndex");
 				})
 				$("#shareBtn").click(function() {
 					$("#shareImg").show()

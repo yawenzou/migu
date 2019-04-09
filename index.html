@@ -2,22 +2,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>AR闯关赢好礼</title>
+		
 		<link rel="stylesheet" href="./css/reset.css" />
 		<link rel="stylesheet" href="./css/style.css" />
-		<script type="text/javascript" src="js/jquery.min.js" ></script>
 
-		<script src="js/three.min.js"></script>
-
-		<script src="js/inflate.min.js"></script>
-		<script src="js/FBXLoader.js"></script>
-
-		<script src="js/OrbitControls.js"></script>
-
-		<script src="js/WebGL.js"></script>
-		<script src="js/stats.min.js"></script>
 	</head>
 	<body>
-		<video id = "qrVideo" class="qr-video"></video>
+		<video id = "qrVideo" class="qr-video" muted></video>
 		<canvas id="qrCanvas" class="qr-canvas"></canvas>
 
 		<div id = "sao" class="sao">
@@ -45,8 +36,8 @@
 
 		<!-- <img src="./img/card1.png" class="move-card"  /> -->
 
-		<div class="way" id="way">
-			<img id = "wayImg" class="way-img" src = "./img/way1.jpg"/>
+		<div class="way" id="way" style="display: none;">
+			<img id = "wayImg" class="way-img" />
 			<img id = "wayClose" class="way-close" src = "./img/close.png"/>
 		</div>
 		<div class="way" id="rule">
@@ -55,16 +46,28 @@
 		</div>
 		<div id="openRuleBtn" class="open-rule-btn">游戏规则</div>
 		<div id="openBtn" class="open-btn">查看路线</div>
-
-
+<!-- <input type="file" name = "file"  id= "uploadForm" style="position: absolute;z-index: 1000" onchange="distinguishImg(event)">
+ -->
 		<img src="./img/download.png" class="success-pop" id="successPop" />
 
-		<img src="./img/3.png" alt="倒计时" class= "timer" id= "timer"/>
+		<img src="./img/3.png?v=2" alt="倒计时" class= "timer" id= "timer"/>
 
 		<!-- <div id="label"></div> -->
 
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+
+		<script src="js/three.min.js"></script>
+
+		<script src="js/inflate.min.js"></script>
+		<script src="js/FBXLoader.js"></script>
+
+		<script src="js/OrbitControls.js"></script>
+
+		<script src="js/WebGL.js"></script>
+		<script src="js/stats.min.js"></script>
+
 		<script type="text/javascript" src="js/index.js?v=12" ></script>
-		<script type="text/javascript" src="js/cramer.js?v=7" ></script>
+		<script type="text/javascript" src="js/cramer.js?v=10" ></script>
 		<script type="text/javascript" src="js/cardAnimate.js?v=6" ></script>
 		<script type="text/javascript" src="js/draw-3d.js?v=6" ></script>
 	</body>

@@ -14,6 +14,8 @@ $(function() {
     setWay();
     setDOmSize();
     showCard();
+
+    loadAnimate();
 	
 });
 
@@ -54,8 +56,8 @@ function setWay() {
     var wayIndex = window.localStorage.getItem("wayIndex") ? window.localStorage.getItem("wayIndex") : index; 
     //alert("11111");
     console.log("wayIndex:" +wayIndex)
-    window.localStorage.setItem("currentWay", wayAll[index].join(","));
-    window.localStorage.setItem("wayIndex", index);
+    window.localStorage.setItem("currentWay", currentWay);
+    window.localStorage.setItem("wayIndex", wayIndex);
     $("#wayImg").attr("src", "./img/way"+wayIndex + ".jpg");
 }
 
@@ -91,9 +93,11 @@ function animateScanning() {
     }, 700)
 }
 
-function distinguishImg(imgData) {
+function distinguishImg(event) {
+//function distinguishImg(imgData) {
+    let fileValue = event.target.files[0];
     var formData = new FormData();
-    formData.append("file", imgData);
+    formData.append("file", fileValue);
     $.ajax({
         url: 'http://47.98.157.16/api/recognition',
         type: 'POST',
@@ -173,10 +177,10 @@ function showCard() {
 function showTime() {
     $("#timer").show()
     setTimeout(function() {
-        $("#timer").attr("src", "./img/2.png");
+        $("#timer").attr("src", "./img/2.png?v=2");
     }, 1000)
     setTimeout(function() {
-        $("#timer").attr("src", "./img/1.png");
+        $("#timer").attr("src", "./img/1.png?v=2");
     }, 2000)
     setTimeout(function() {
         $("#timer").hide();

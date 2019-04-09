@@ -13,17 +13,38 @@ var clock = new THREE.Clock();
 
 var mixer, mixer2;
 var isAnimate;
+var objects1 = [];
+var objects2 = [];
 
 var canvasContainer = document.getElementById("model3d");
 var height1 = window.innerHeight-300;
 
 function startDraw3d(index) {
-	init(index);
-	animate();
+	if(objects1.length === 5 && objects2.length === 5) {
+		init(index);
+		animate();
+	}
+}
+
+function loadAnimate() {
+	for (let i = 0; i < 5; i++) {
+		let j = i+1;
+		var loader = new THREE.FBXLoader();
+		loader.load( 'model/model'+j+'.fbx', function ( object ) {
+			objects1[i] = object;
+		})
+	}
+	for (let k = 0; k < 5; k++) {
+		let l = k+1;
+		var loader = new THREE.FBXLoader();
+		loader.load( 'model/animate-model'+l+'.fbx', function ( object ) {
+			objects2[k] = object;
+		})
+	}
 }
 
 
-var durationTime = [6, 8, 7, 8, 8]
+var durationTime = [4, 5, 5, 5, 5]
 function init(index) {
 
 	container = document.createElement( 'div' );
@@ -32,7 +53,7 @@ function init(index) {
 	canvasContainer.appendChild( container );
 
 	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / height1, 0.1, 1000 );
-	camera.position.set( 0, 0, 70 );
+	camera.position.set( 0, -10, 70 );
 	camera.lookAt( scene.position );
 
 
@@ -45,55 +66,67 @@ function init(index) {
 	scene.add( light );
 
 	// model
-	var loader = new THREE.FBXLoader();
+	//var loader = new THREE.FBXLoader();
 	
-	loader.load( 'model/model'+index+'.fbx', function ( object ) {
+	//loader.load( 'model/model'+index+'.fbx', function ( object ) {
 
-		mixer = new THREE.AnimationMixer( object );
+	mixer = new THREE.AnimationMixer( objects1[index-1] );
 
-		var action = mixer.clipAction( object.animations[ 0 ] );
-		action.setDuration(durationTime[index-1]);
-		action.clampWhenFinished = true;
-		action.setLoop(1, 1);
-		action.play();
-		
-		object.traverse( function ( child ) {
+	var action = mixer.clipAction( objects1[index-1].animations[ 0 ] );
+	action.setDuration(durationTime[index-1]);
+	action.clampWhenFinished = true;
+	action.setLoop(1, 1);
+	action.play();
+	
+	objects1[index-1].traverse( function ( child ) {
 
-			if ( child.isMesh ) {
+		if ( child.isMesh ) {
 
-				child.castShadow = true;
-				child.receiveShadow = true;
+			child.castShadow = true;
+			child.receiveShadow = true;
 
-			}
-
-		} );
-
-		scene.add( object );
-		isAnimate = true;
-
-		setTimeout(function() {
-			showTime();
-		}, durationTime[index-1]*1000)
-
-		setTimeout(function() {
-			action.stop();
-			isAnimate = false;
-			scene.remove(object);
-		}, durationTime[index-1]*1000+3000)
+		}
 
 	} );
 
+	scene.add( objects1[index-1] );
+	isAnimate = true;
+
+	setTimeout(function() {
+		showTime();
+		loadAnimate2(index);
+	}, durationTime[index-1]*1000)
+
+	setTimeout(function() {
+		action.stop();
+		isAnimate = false;
+		scene.remove(objects1[index-1]);
+	}, durationTime[index-1]*1000+3000)
+
+	//} );
+
+	renderer = new THREE.WebGLRenderer( { antialias: true , alpha: true} );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, height1 );
+	renderer.shadowMap.enabled = true;
+	container.appendChild( renderer.domElement );
+
+	window.addEventListener( 'resize', onWindowResize, false );
+
+}
+
+function loadAnimate2(index) {
 	// model
-	var loader2 = new THREE.FBXLoader();
-	loader2.load( 'model/animate-model'+index+'.fbx', function ( object ) {
+	//var loader2 = new THREE.FBXLoader();
+	//loader2.load( 'model/animate-model'+index+'.fbx', function ( object ) {
 
-		mixer2 = new THREE.AnimationMixer( object );
+		mixer2 = new THREE.AnimationMixer( objects2[index-1] );
 
-		var action = mixer2.clipAction( object.animations[ 0 ] );
+		var action = mixer2.clipAction( objects2[index-1].animations[ 0 ] );
 		action.startAt(durationTime[index-1])
 		action.play();
 
-		object.traverse( function ( child ) {
+		objects2[index-1].traverse( function ( child ) {
 
 			if ( child instanceof THREE.Mesh) {
 
@@ -109,24 +142,16 @@ function init(index) {
 				isAnimate = true;
 				camera.position.y = -40;
 				camera.lookAt( scene.position );
-				scene.add( object );
+				scene.add( objects2[index-1] );
 				bindClick();
-			}, durationTime[index-1]*1000+3000)
+			}, 3000)
 
 		} );
 
 
-	} );
-
-	renderer = new THREE.WebGLRenderer( { antialias: true , alpha: true} );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, height1 );
-	renderer.shadowMap.enabled = true;
-	container.appendChild( renderer.domElement );
-
-	window.addEventListener( 'resize', onWindowResize, false );
-
+	//} );
 }
+
 
 function onWindowResize() {
 
