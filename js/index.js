@@ -12,6 +12,11 @@ $(function() {
     $("#model3d").hide();
 
     phoneIsIos();
+
+    if(!isIos) {
+        $("#fileBtn").hide();
+    }
+
     event();
     setWay();
     setDOmSize();
@@ -57,6 +62,19 @@ function event() {
     $("#successPop").click(function() {
         window.location.href = "success.html";
     })
+
+
+    document.getElementById('fileBtn').addEventListener('change', function() {
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            compress(this.result);
+        };
+
+        reader.readAsDataURL(this.files[0]);
+
+    }, false);
 }
 
 function setWay() {
@@ -81,7 +99,7 @@ function startScanning() {
         openMedia();
     }
     else {
-        $("#successPop").show();
+        window.location.href = "success.html";
     }
 }
 
@@ -107,9 +125,14 @@ function animateScanning() {
 
 //function distinguishImg(event) {
 function distinguishImg(imgData) {
-    //let fileValue = event.target.files[0];
+    var fileData = imgData;
+   // if(isIos) {
+        //fileData = $("#fileBtn")[0].files[0];
+   // }
+
     var formData = new FormData();
-    formData.append("file", imgData);
+    formData.append("file", fileData);
+    $("#fileBtn").val("");
     $.ajax({
         url: 'http://47.98.157.16/api/recognition',
         type: 'POST',
@@ -118,9 +141,11 @@ function distinguishImg(imgData) {
         processData : false,   
         contentType : false,  
         success:function(data) {
+
             var rs = JSON.parse(data);
             if(rs.code === 200) {
-                var cardStr = window.localStorage.getItem("cardStr") ? parseInt(window.localStorage.getItem("cardStr")) : '';
+
+                var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
                 var currentWay = window.localStorage.getItem("currentWay") ? window.localStorage.getItem("currentWay") : wayAll[1].join(",");
                 var currentWayArr = currentWay.split(",");
                 var id = rs.content.split("pic")[1];
@@ -130,6 +155,7 @@ function distinguishImg(imgData) {
                 console.log("currentWay:" + currentWay);
                 console.log("index:" + index);
                 if(index >0) {
+                    //alert(44)
                     if(!cardStr || String(cardStr).indexOf(index) <0) {
                         $("#sao").hide();
                         clearInterval(timer1);
@@ -149,10 +175,18 @@ function distinguishImg(imgData) {
                 }
             }
             else {
+                if(isIos) {
+                    alert("哎呀，没识别到精灵欸。帮我重新拍张照，我马上就出现！");
+                    saoReset();
+                }
                 curNum = 0;
             }
         },
         error: function(err) {
+            if(isIos) {
+                alert(JSON.stringify(err))
+            }
+           // alert(JSON.stringify(err))
             curNum = 0;
             console.log(err);
         }      
@@ -161,7 +195,9 @@ function distinguishImg(imgData) {
 
 
 function saoReset() {
-    closeMedia();
+    if(!isIos) {
+        closeMedia();
+    }
     clearInterval(timer1);
     clearInterval(timer3);
     $("#qrVideo").hide();
@@ -182,20 +218,55 @@ function showCard() {
         }
         $(".right-card").html(listText);
         if(cardArr.length === 5) {
-            $("#susccessPop").show();
+            window.location.href = "success.html";
         }
     }
 }
 
 function showTime() {
-    $("#timer").show()
+    $("#jlShow").show();
     setTimeout(function() {
-        $("#timer").attr("src", "./img/2.png?v=2");
-    }, 1000)
-    setTimeout(function() {
-        $("#timer").attr("src", "./img/1.png?v=2");
+        $("#jlShow").hide();
+        $("#timer").show()
     }, 2000)
     setTimeout(function() {
-        $("#timer").hide();
+        $("#timer").attr("src", "./img/2.png?v=3");
     }, 3000)
+    setTimeout(function() {
+        $("#timer").attr("src", "./img/1.png?v=3");
+    }, 4000)
+    setTimeout(function() {
+        $("#timer").hide();
+        $("#timer").attr("src", "./img/3.png?v=3");
+    }, 5000)
+}
+
+
+function compress(res) {
+    var img = new Image(),
+        maxH = 160;
+
+    img.onload = function () {
+        var cvs = document.createElement('canvas'),
+            ctx = cvs.getContext('2d');
+
+        if(img.height > maxH) {
+            img.width *= maxH / img.height;
+            img.height = maxH;
+        }
+
+        cvs.width = img.width;
+        cvs.height = img.height;
+
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+
+        var dataUrl = cvs.toDataURL('image/jpeg', 0.6);
+        let filedata = dataURItoBlob(dataUrl);
+        alert(filedata)
+        distinguishImg(filedata)
+        // 上传略
+    }
+
+    img.src = res;
 }

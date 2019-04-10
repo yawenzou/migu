@@ -4,7 +4,7 @@
 		<title>AR闯关赢好礼</title>
 		
 		<link rel="stylesheet" href="./css/reset.css" />
-		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="stylesheet" href="./css/style.css?v=2" />
 
 	</head>
 	<body>
@@ -17,7 +17,8 @@
 				<img src="./img/line.png" class="line" id = "scanningLine"/>
 			</div>
 			<div class="sao-btn">
-				<img id="saoBtn" src="./img/sao_btn.png" alt="扫一扫">
+				<img id="saoBtn" src="./img/sao_btn.png" alt="扫一扫" />
+				<input id="fileBtn" type="file"  accept="image/*" capture="camera" />
 			</div>
 		</div>
 
@@ -26,11 +27,6 @@
 		<div id="cardBag" class="card-bag">
 			<div class="left-img"><img src="./img/bag_close.png" alt=""></div>
 			<div class="right-card">
-				<!-- <img src="./img/card1.png" alt="精灵卡片" class="card-img">
-				<img src="./img/card2.png" alt="精灵卡片" class="card-img">
-				<img src="./img/card3.png" alt="精灵卡片" class="card-img">
-				<img src="./img/card4.png" alt="精灵卡片" class="card-img">
-				<img src="./img/card5.png" alt="精灵卡片" class="card-img"> -->
 			</div>
 		</div>
 
@@ -52,6 +48,8 @@
 
 		<img src="./img/3.png?v=2" alt="倒计时" class= "timer" id= "timer"/>
 
+		<p class="jl-show" id="jlShow">精灵马上就出来咯，快来快来快来抓我吧</p>
+
 		<!-- <div id="label"></div> -->
 
 		<script type="text/javascript" src="js/jquery.min.js" ></script>
@@ -66,9 +64,9 @@
 		<script src="js/WebGL.js"></script>
 		<script src="js/stats.min.js"></script>
 
-		<script type="text/javascript" src="js/index.js?v=12" ></script>
-		<script type="text/javascript" src="js/cramer.js?v=10" ></script>
-		<script type="text/javascript" src="js/cardAnimate.js?v=6" ></script>
-		<script type="text/javascript" src="js/draw-3d.js?v=6" ></script>
+		<script type="text/javascript" src="js/index.js?v=16" ></script>
+		<script type="text/javascript" src="js/cramer.js?v=11" ></script>
+		<script type="text/javascript" src="js/cardAnimate.js?v=7" ></script>
+		<script type="text/javascript" src="js/draw-3d.js?v=7" ></script>
 	</body>
 </html>

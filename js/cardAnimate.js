@@ -29,7 +29,9 @@ function addCard() {
 		var listText = '<img src="./img/card'+cardNum+'.png" alt="精灵卡片" class="card-img show-card" />';
 		$(".right-card").append(listText);
 
-		closeMedia();
+		if(!isIos) {
+			closeMedia();
+		}
 		$("#qrVideo").hide();
 		$("#sao").show();
 		$("#saoBtn").show();
@@ -37,13 +39,13 @@ function addCard() {
 		clearInterval(timer3);
 
 		if(cardArr.length === 5) {
-			 $("#successPop").show();
+			 window.location.href = "success.html";
 		}
 		else {
 			$("#way").show();
 		}
 	}
 	else {
-		 $("#successPop").show();
+		 window.location.href = "success.html";
 	}
 }

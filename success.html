@@ -7,7 +7,7 @@
 
 		<script type="text/javascript" src="js/jquery.min.js" ></script>
 
-		<<style type="text/css" media="screen">
+		<style type="text/css" media="screen">
 			.share-img {
 				position: absolute;
 				left: 0;
@@ -21,20 +21,32 @@
 	</head>
 	<body style="background-color: #fff">
 		<img src="./img/success.jpg" alt="你成功啦" class="sueecss-img" />
+
 		<img src="./img/share_btn.png" alt="分享" id="shareBtn" class="share-btn" />
-		<img src="./img/success_btn.jpg" alt="完成" id="finished" class="download_btn" />
+		<a href="http://wap.cmread.com/r/p/qz99.jsp?cm=M10200YR"><img src="./img/download_btn.png" alt="下载" id="downloadBtn" class="download_btn" /></a>
 
 		<img src="./img/share_bg.png" alt="分享" class="share-img"  id = "shareImg"/>
 			
-		</div>>
+		<img src="./img/confirm.png" alt="完成" id="finished" class="comfirm_btn" />
+
+		<a href="index.html"><img src="./img/home.png" alt="首页" id="homeBtn" class="home_btn" /></a>
+
+		<div id="cardBag" class="card-bag">
+			<div class="left-img"><img src="./img/bag_close.png" alt=""></div>
+			<div class="right-card">
+			</div>
+		</div>
 
 		<script>
 			$(function() {
+				showCard();
+
 				$("#finished").click(function() {
 					window.localStorage.removeItem("cardNum");
 					window.localStorage.removeItem("cardStr");
 					window.localStorage.removeItem("currentWay");
 					window.localStorage.removeItem("wayIndex");
+					$(".right-card").html('');
 				})
 				$("#shareBtn").click(function() {
 					$("#shareImg").show()
@@ -43,6 +55,23 @@
 					$("#shareImg").hide()
 				})
 			})
+
+
+			function showCard() {
+			    var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
+
+			    if(cardStr) {
+			        var listText = '';
+			        var cardArr = cardStr.split(',');
+			        for (var i = 0; i < cardArr.length; i++) {
+			            listText += '<img src="./img/card'+cardArr[i]+'.png" alt="精灵卡片" class="card-img show-card" />';
+			        }
+			        $(".right-card").html(listText);
+			        if(cardArr.length === 5) {
+			            $("#susccessPop").show();
+			        }
+			    }
+			}
 		</script>
 	</body>
 </html>

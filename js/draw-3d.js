@@ -101,7 +101,7 @@ function init(index) {
 		action.stop();
 		isAnimate = false;
 		scene.remove(objects1[index-1]);
-	}, durationTime[index-1]*1000+3000)
+	}, durationTime[index-1]*1000+5000)
 
 	//} );
 
@@ -124,7 +124,7 @@ function loadAnimate2(index) {
 
 		var action = mixer2.clipAction( objects2[index-1].animations[ 0 ] );
 		action.startAt(durationTime[index-1])
-		action.play();
+		//action.play();
 
 		objects2[index-1].traverse( function ( child ) {
 
@@ -142,9 +142,10 @@ function loadAnimate2(index) {
 				isAnimate = true;
 				camera.position.y = -40;
 				camera.lookAt( scene.position );
+				action.play();
 				scene.add( objects2[index-1] );
 				bindClick();
-			}, 3000)
+			}, 5000)
 
 		} );
 

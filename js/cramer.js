@@ -77,9 +77,9 @@ function drawMedia(){
         if(curNum === upNum) {
             //alert(curNum)
             let imgData = canvas1.toDataURL('image/png');
-            if(isIos) {
+            /*if(isIos) {
                 $("#qrCanvas").attr("src", imgData);
-            }
+            }*/
             let file = dataURItoBlob(imgData);
             distinguishImg(file)
         }
