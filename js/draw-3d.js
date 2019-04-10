@@ -207,10 +207,10 @@ function onDocumenClick(e) {
 }
 
 function bindClick() {
-	window.addEventListener("click", onDocumenClick, false);
+	$("#model3d")[0].addEventListener("click", onDocumenClick, false);
 }
 
 function unbindClick() {
-	window.removeEventListener("click", onDocumenClick, false);
+	$("#model3d")[0].removeEventListener("click", onDocumenClick, false);
 }
 

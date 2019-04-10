@@ -126,9 +126,9 @@ function animateScanning() {
 //function distinguishImg(event) {
 function distinguishImg(imgData) {
     var fileData = imgData;
-   // if(isIos) {
-        //fileData = $("#fileBtn")[0].files[0];
-   // }
+   /*if(isIos) {
+        fileData = $("#fileBtn")[0].files[0];
+   }*/
 
     var formData = new FormData();
     formData.append("file", fileData);
@@ -183,9 +183,7 @@ function distinguishImg(imgData) {
             }
         },
         error: function(err) {
-            if(isIos) {
-                alert(JSON.stringify(err))
-            }
+           alert(JSON.stringify(err))
            // alert(JSON.stringify(err))
             curNum = 0;
             console.log(err);
@@ -261,9 +259,8 @@ function compress(res) {
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         ctx.drawImage(img, 0, 0, img.width, img.height);
 
-        var dataUrl = cvs.toDataURL('image/jpeg', 0.6);
+        var dataUrl = cvs.toDataURL('image/jpeg', 1);
         let filedata = dataURItoBlob(dataUrl);
-        alert(filedata)
         distinguishImg(filedata)
         // 上传略
     }
