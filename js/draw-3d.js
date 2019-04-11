@@ -20,7 +20,13 @@ var canvasContainer = document.getElementById("model3d");
 var height1 = window.innerHeight-300;
 
 function startDraw3d(index) {
+	if(isIos) {
+		//alert(111)
+    }
 	if(objects1.length === 5 && objects2.length === 5) {
+		if(isIos) {
+			//alert(222)
+	    }
 		init(index);
 		animate();
 	}
@@ -119,7 +125,6 @@ function loadAnimate2(index) {
 	// model
 	//var loader2 = new THREE.FBXLoader();
 	//loader2.load( 'model/animate-model'+index+'.fbx', function ( object ) {
-
 		mixer2 = new THREE.AnimationMixer( objects2[index-1] );
 
 		var action = mixer2.clipAction( objects2[index-1].animations[ 0 ] );

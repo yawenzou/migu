@@ -71,17 +71,20 @@ function drawMedia(){
     canvas1.setAttribute("width", video.videoWidth);
     canvas1.setAttribute("height", video.videoHeight);
     
-	timer3 = setInterval(function(){
+    //timer3 = setInterval(function(){
+	timer3 = setTimeout(function(){
         context1.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
         curNum++;
         if(curNum === upNum) {
             //alert(curNum)
             let imgData = canvas1.toDataURL('image/png');
+            console.log(imgData)
             /*if(isIos) {
                 $("#qrCanvas").attr("src", imgData);
             }*/
             let file = dataURItoBlob(imgData);
-            distinguishImg(file)
+            imgData = imgData.replace("data:image/png;base64,", "")
+            distinguishImg(imgData)
         }
     }, 40);
 }

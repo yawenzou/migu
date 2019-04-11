@@ -66,6 +66,8 @@ function event() {
 
     document.getElementById('fileBtn').addEventListener('change', function() {
 
+        //distinguishImg();
+
         var reader = new FileReader();
 
         reader.onload = function (e) {
@@ -126,15 +128,16 @@ function animateScanning() {
 //function distinguishImg(event) {
 function distinguishImg(imgData) {
     var fileData = imgData;
-   /*if(isIos) {
+    if(isIos) {
         fileData = $("#fileBtn")[0].files[0];
-   }*/
+    }
 
     var formData = new FormData();
     formData.append("file", fileData);
     $("#fileBtn").val("");
-    $.ajax({
-        url: 'http://47.98.157.16/api/recognition',
+    var ajaxRequest = $.ajax({
+        //url: 'http://47.110.64.77/api/recognition',
+        url: 'https://api.guoweiquan.cn/api/recognition2',
         type: 'POST',
         data: formData,
         dataType:"text",  
@@ -142,16 +145,19 @@ function distinguishImg(imgData) {
         contentType : false,  
         success:function(data) {
 
-            var rs = JSON.parse(data);
+            /*var rs = JSON.parse(data);
             if(rs.code === 200) {
 
-                var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
+                var id = rs.content.split("pic")[1];
+                console.log("id:" + id);
+
+                successDistinguishImg(true, id);*/
+
+                /*var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
                 var currentWay = window.localStorage.getItem("currentWay") ? window.localStorage.getItem("currentWay") : wayAll[1].join(",");
                 var currentWayArr = currentWay.split(",");
-                var id = rs.content.split("pic")[1];
                 let index = currentWayArr.indexOf(id)+1;
                 //let index = 3;
-                console.log("id:" + id);
                 console.log("currentWay:" + currentWay);
                 console.log("index:" + index);
                 if(index >0) {
@@ -172,23 +178,70 @@ function distinguishImg(imgData) {
                 else {
                     alert("这不是你的展位，你走的路线不对哦！");
                     saoReset();
-                }
-            }
+                }*/
+            /*}
             else {
                 if(isIos) {
                     alert("哎呀，没识别到精灵欸。帮我重新拍张照，我马上就出现！");
                     saoReset();
                 }
                 curNum = 0;
-            }
+            }*/
         },
         error: function(err) {
-           alert(JSON.stringify(err))
+           //alert(JSON.stringify(err))
            // alert(JSON.stringify(err))
-            curNum = 0;
-            console.log(err);
+            /*curNum = 0;
+            console.log(err);*/
         }      
     })
+    let timeaa = isIos ? 1500 : 5000;
+
+    setTimeout(function(){
+
+        //if(ajaxRequest&&ajaxRequest.readyState!=4){
+
+            ajaxRequest.abort();
+            successDistinguishImg(false)
+
+       // }
+
+    },timeaa);
+}
+
+function successDistinguishImg(isRequire, id) {
+    var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
+    var currentWay = window.localStorage.getItem("currentWay") ? window.localStorage.getItem("currentWay") : wayAll[1].join(",");
+    var currentWayArr = currentWay.split(",");
+    var index;
+    if(isRequire) {
+        index = currentWayArr.indexOf(id)+1;
+    }
+    else {
+        index = cardStr ? cardStr.split(",").length+1 : 1;
+    }
+    //let index = 3;
+    console.log("currentWay:" + currentWay);
+    console.log("index:" + index);
+    if(index >0) {
+        //alert(44)
+        if(!cardStr || String(cardStr).indexOf(index) <0) {
+            $("#sao").hide();
+            clearInterval(timer1);
+            $("#model3d").show();
+            window.localStorage.setItem("cardNum", index);
+            startDraw3d(index);
+
+        }
+        else {
+            alert("该类型精灵已经收集过哦，您可以去其他展位手机精灵");
+            saoReset();
+        }
+    }
+    else {
+        alert("这不是你的展位，你走的路线不对哦！");
+        saoReset();
+    }
 }
 
 
@@ -223,20 +276,22 @@ function showCard() {
 
 function showTime() {
     $("#jlShow").show();
-    setTimeout(function() {
+    console.log(11111)
+    var t1 = setTimeout(function() {
         $("#jlShow").hide();
         $("#timer").show()
     }, 2000)
-    setTimeout(function() {
+    var t2 = setTimeout(function() {
         $("#timer").attr("src", "./img/2.png?v=3");
     }, 3000)
-    setTimeout(function() {
+    var t3 = setTimeout(function() {
         $("#timer").attr("src", "./img/1.png?v=3");
     }, 4000)
-    setTimeout(function() {
+    var t4 = setTimeout(function() {
         $("#timer").hide();
         $("#timer").attr("src", "./img/3.png?v=3");
     }, 5000)
+
 }
 
 
@@ -259,9 +314,11 @@ function compress(res) {
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         ctx.drawImage(img, 0, 0, img.width, img.height);
 
-        var dataUrl = cvs.toDataURL('image/jpeg', 1);
+        var dataUrl = cvs.toDataURL('image/png', 0.8);
+        console.log(dataUrl)
         let filedata = dataURItoBlob(dataUrl);
-        distinguishImg(filedata)
+        dataUrl = dataUrl.replace("data:image/png;base64,", "")
+        distinguishImg(dataUrl)
         // 上传略
     }
 
