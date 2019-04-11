@@ -129,7 +129,7 @@ function animateScanning() {
 function distinguishImg(imgData) {
     var fileData = imgData;
     if(isIos) {
-        fileData = $("#fileBtn")[0].files[0];
+        //fileData = $("#fileBtn")[0].files[0];
     }
 
     var formData = new FormData();
@@ -139,19 +139,20 @@ function distinguishImg(imgData) {
         //url: 'http://47.110.64.77/api/recognition',
         url: 'https://api.guoweiquan.cn/api/recognition2',
         type: 'POST',
-        data: formData,
-        dataType:"text",  
-        processData : false,   
-        contentType : false,  
+        data: {
+            "file": fileData
+        },
+        dataType:"json",  
         success:function(data) {
 
-            /*var rs = JSON.parse(data);
+            var rs = data;
+            //alert(JSON.stringify(rs))
             if(rs.code === 200) {
 
                 var id = rs.content.split("pic")[1];
                 console.log("id:" + id);
 
-                successDistinguishImg(true, id);*/
+                successDistinguishImg(true, id);
 
                 /*var cardStr = window.localStorage.getItem("cardStr") ? window.localStorage.getItem("cardStr") : '';
                 var currentWay = window.localStorage.getItem("currentWay") ? window.localStorage.getItem("currentWay") : wayAll[1].join(",");
@@ -179,34 +180,34 @@ function distinguishImg(imgData) {
                     alert("这不是你的展位，你走的路线不对哦！");
                     saoReset();
                 }*/
-            /*}
+            }
             else {
                 if(isIos) {
                     alert("哎呀，没识别到精灵欸。帮我重新拍张照，我马上就出现！");
                     saoReset();
                 }
                 curNum = 0;
-            }*/
+            }
         },
         error: function(err) {
-           //alert(JSON.stringify(err))
+           alert(JSON.stringify(err))
            // alert(JSON.stringify(err))
-            /*curNum = 0;
-            console.log(err);*/
+            curNum = 0;
+            console.log(err);
         }      
     })
-    let timeaa = isIos ? 1500 : 5000;
+    /*let timeaa = isIos ? 1500 : 5000;
 
     setTimeout(function(){
 
-        //if(ajaxRequest&&ajaxRequest.readyState!=4){
+        if(ajaxRequest&&ajaxRequest.readyState!=4){
 
             ajaxRequest.abort();
             successDistinguishImg(false)
 
-       // }
+        }
 
-    },timeaa);
+    },timeaa);*/
 }
 
 function successDistinguishImg(isRequire, id) {
@@ -314,8 +315,8 @@ function compress(res) {
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         ctx.drawImage(img, 0, 0, img.width, img.height);
 
-        var dataUrl = cvs.toDataURL('image/png', 0.8);
-        console.log(dataUrl)
+        var dataUrl = cvs.toDataURL('image/png');
+        //console.log(dataUrl)
         let filedata = dataURItoBlob(dataUrl);
         dataUrl = dataUrl.replace("data:image/png;base64,", "")
         distinguishImg(dataUrl)

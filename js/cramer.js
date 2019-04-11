@@ -72,13 +72,13 @@ function drawMedia(){
     canvas1.setAttribute("height", video.videoHeight);
     
     //timer3 = setInterval(function(){
-	timer3 = setTimeout(function(){
+	timer3 = setInterval(function(){
         context1.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
         curNum++;
         if(curNum === upNum) {
             //alert(curNum)
             let imgData = canvas1.toDataURL('image/png');
-            console.log(imgData)
+            //console.log(imgData)
             /*if(isIos) {
                 $("#qrCanvas").attr("src", imgData);
             }*/
